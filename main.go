@@ -70,6 +70,9 @@ func setupRouter(handler *handlers.Handler) *gin.Engine {
 		c.Next()
 	})
 
+	// Serve frontend static files
+	router.Static("/ui", "./frontend")
+
 	// API路由
 	api := router.Group("/api")
 	{

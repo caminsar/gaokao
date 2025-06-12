@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考志愿查询</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>高考志愿查询系统</h1>
+    </header>
+    <nav>
+        <button onclick="showSection('rankQuery')">位次查询</button>
+        <button onclick="showSection('advancedRankQuery')">高级查询位次</button>
+        <button onclick="showSection('reportQuery')">报表查询</button>
+    </nav>
+
+    <main>
+        <section id="rankQuery">
+            <h2>位次查询 (GET /api/rank/get)</h2>
+            <form id="rankQueryForm">
+                <div>
+                    <label for="rankQueryScore">分数:</label>
+                    <input type="number" id="rankQueryScore" name="score" required>
+                </div>
+                <button type="submit">查询位次</button>
+            </form>
+            <div id="rankQueryResult"></div>
+        </section>
+
+        <section id="advancedRankQuery" style="display:none;">
+            <h2>高级查询位次 (POST /api/v1/query_rank)</h2>
+            <form id="advancedRankQueryForm">
+                <div>
+                    <label for="advancedProvince">省份 (默认: 湖北):</label>
+                    <input type="text" id="advancedProvince" name="province">
+                </div>
+                <div>
+                    <label for="advancedYear">年份 (默认: 2024):</label>
+                    <input type="number" id="advancedYear" name="year" placeholder="例如: 2024">
+                </div>
+                <div>
+                    <label for="advancedScore">分数 (必填):</label>
+                    <input type="number" id="advancedScore" name="score" required>
+                </div>
+                <div>
+                    <label for="advancedSubjectType">科目类型 (默认: 物理):</label>
+                    <input type="text" id="advancedSubjectType" name="subjectType" placeholder="例如: 物理">
+                </div>
+                <div>
+                    <label for="advancedClassDemand">选科要求 (默认: 物,化,生 - 逗号分隔):</label>
+                    <input type="text" id="advancedClassDemand" name="classDemand" placeholder="例如: 物,化,生">
+                </div>
+                <button type="submit">高级查询位次</button>
+            </form>
+            <div id="advancedRankQueryResult"></div>
+        </section>
+
+        <section id="reportQuery" style="display:none;">
+            <h2>报表查询 (GET /api/report/get)</h2>
+            <form id="reportQueryForm">
+                <div>
+                    <label for="reportRank">位次 (必填):</label>
+                    <input type="number" id="reportRank" name="rank" required>
+                </div>
+                <div>
+                    <label for="reportClassComb">选科组合 (例如: 物,化,生):</label>
+                    <input type="text" id="reportClassComb" name="classComb">
+                </div>
+                <div>
+                    <label for="reportProvince">省份 (例如: 湖北):</label>
+                    <input type="text" id="reportProvince" name="province">
+                </div>
+                <div>
+                    <label for="reportPage">页码 (默认: 1):</label>
+                    <input type="number" id="reportPage" name="page" placeholder="1">
+                </div>
+                <div>
+                    <label for="reportPageSize">每页条数 (默认: 20, 最大: 100):</label>
+                    <input type="number" id="reportPageSize" name="pageSize" placeholder="20">
+                </div>
+                <button type="submit">查询报表</button>
+            </form>
+            <div id="reportQueryResult"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 高考志愿查询</p>
+    </footer>
+
+    <script src="report.js"></script>
+    <script src="advanced_rank.js"></script>
+    <script src="rank.js"></script>
+    <script>
+        function showSection(sectionId) {
+            document.getElementById('rankQuery').style.display = 'none';
+            document.getElementById('advancedRankQuery').style.display = 'none';
+            document.getElementById('reportQuery').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        // Show the first section by default
+        showSection('rankQuery');
+    </script>
+</body>
+</html>
