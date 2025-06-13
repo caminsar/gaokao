@@ -29,41 +29,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(`/api/report/get?${params.toString()}`);
                 const data = await response.json();
 
-                if (response.ok && data.code === 0) {
-                    if (data.data && data.data.report_data && data.data.report_data.length > 0) {
+                if (response.ok && data.code === 0 && data.data) {
+                    if (data.data.list && data.data.list.length > 0) {
+                        const conf = data.data.conf || {};
                         let tableHTML = `
                             <p><strong>查询成功</strong></p>
-                            <p>总数: ${data.data.total_count}, 当前页: ${data.data.current_page}, 每页条数: ${data.data.page_size}</p>
+                            <p>总数: ${conf.total_number !== undefined ? conf.total_number : 'N/A'},
+                               当前页: ${conf.page !== undefined ? conf.page : 'N/A'},
+                               每页条数: ${conf.page_size !== undefined ? conf.page_size : 'N/A'},
+                               总页数: ${conf.total_page !== undefined ? conf.total_page : 'N/A'}
+                            </p>
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>年份</th>
-                                        <th>省份</th>
+                                        <th>院校代码</th>
                                         <th>院校名称</th>
                                         <th>专业名称</th>
                                         <th>选科要求</th>
                                         <th>最低分</th>
                                         <th>最低位次</th>
-                                        <th>录取数</th>
-                                        <th>学费</th>
-                                        <th>专业备注</th>
+                                        <th>专业组代码</th>
+                                        <th>备注/描述</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                         `;
-                        data.data.report_data.forEach(item => {
+                        data.data.list.forEach(item => {
                             tableHTML += `
                                 <tr>
-                                    <td>${item.year || ''}</td>
-                                    <td>${item.province_name || ''}</td>
-                                    <td>${item.university_name || ''}</td>
-                                    <td>${item.major_name || ''}</td>
-                                    <td>${item.class_demand_str || ''}</td>
-                                    <td>${item.min_score || ''}</td>
-                                    <td>${item.min_rank || ''}</td>
-                                    <td>${item.admission_count || ''}</td>
-                                    <td>${item.tuition_fee || ''}</td>
-                                    <td>${item.major_remark || ''}</td>
+                                    <td>${item.colledge_code || ''}</td>
+                                    <td>${item.colledge_name || ''}</td>
+                                    <td>${item.professional_name || ''}</td>
+                                    <td>${item.class_demand || ''}</td>
+                                    <td>${item.lowest_points !== undefined ? item.lowest_points : ''}</td>
+                                    <td>${item.lowest_rank !== undefined ? item.lowest_rank : ''}</td>
+                                    <td>${item.special_interest_group_code || ''}</td>
+                                    <td>${item.description || ''}</td>
                                 </tr>
                             `;
                         });
